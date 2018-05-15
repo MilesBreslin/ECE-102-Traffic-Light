@@ -1,2 +1,5 @@
+%% For each cycle we have, create a new line showing which lines are 
+green and which lines are red by marking the green ones as 1's and the 
+red with 0's
 1,0
 0,1
