@@ -8,6 +8,9 @@ f_CYCLEMAP =	'cyclemap.dat';
 PINMAP =	importdata(f_PINMAP);
 CYCLEMAP =	importdata(f_CYCLEMAP);
 
+yellowTime = 0;
+redTime = 3;
+
 %% Load Labjack
 
 ljud_LoadDriver
@@ -25,13 +28,16 @@ DONE = false;		%%Allow Safe escape if implemented
 
 while ~DONE
 	for n = 1:length(CYCLEMAP(:,1))
-		SetCycle(ljHandle,CYCLEMAP(n,:),PINMAP, LJ_ioPUT_DIGITAL_BIT);							%%Selected On
-        fprintf("SET Cycle %d\n",n);
-		pause(CYCLEMAP(n,end));
-		%%SetCycle(CYCLEMAP(n,:) *.5,PINMAP);						%%Selected "Yellow" simulated as 50% intensity
-		%%pause(2);
-		SetCycle(ljHandle,zeros(1,length(CYCLEMAP(1,:))), PINMAP, LJ_ioPUT_DIGITAL_BIT);		%%All Off
-        fprintf("CLEAR Cycle %d\n",n);
-		pause(3);
+		tic
+		while (((toc/CYCLEMAP(n,end)) + yellowTime + redTime) <= 1)
+			if ((toc/CYCLEMAP(n,end) <= 1)		%%GreenTime
+				SetCycle(ljHandle,CYCLEMAP(n,:),PINMAP, LJ_ioPUT_DIGITAL_BIT);
+			elseif (((toc/CYCLEMAP(n,end))+ yellowTime) = 1)	%%YellowTime
+				SetCycle(ljHandle,CYCLEMAP(n,:),PINMAP, LJ_ioPUT_DIGITAL_BIT); %%Unimplemented
+			else   %%RedTime
+				SetCycle(ljHandle,zeros(1,length(CYCLEMAP(1,:))), PINMAP, LJ_ioPUT_DIGITAL_BIT);				
+			end
+			pause(.1);
+		end
 	end
 end
