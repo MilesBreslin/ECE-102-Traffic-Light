@@ -52,7 +52,7 @@ while ~DONE
 				SetCycle(ljHandle,	cycle*2,PINMAP,		LJ_ioPUT_DIGITAL_BIT);		%%Use 3rd column
 				SetCycle(ljHandle,	wcycle,	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 			elseif (toc/time <= 1)											%%WalkFlash
-				SetCycle(ljHandle,	cycle,	PINMAP, 	LJ_ioPUT_DIGITAL_BIT);
+				SetCycle(ljHandle,	cycle*2,PINMAP, 	LJ_ioPUT_DIGITAL_BIT);
 				SetCycle(ljHandle,	wcycle & (mod(ceil(toc-walkTime),2)),	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 
 			elseif (toc/(time+ yellowTime) <= 1)							%%YellowTime
@@ -65,10 +65,9 @@ while ~DONE
 			end
 
 			activeWalk = activeWalk | getButtonPresses(ljHandle,BTNMAP,LJ_ioPUT_DIGITAL_BIT);		%%Add buttons being pressed only
-			%%getButtonPresses Unimplemented
 			pause(.1)
 		end
 
-		activeWalk(n) = 0;
+		activeWalk(n) = 0;		%%Clear walk buffer *after* it is done displaying.
 	end
 end
