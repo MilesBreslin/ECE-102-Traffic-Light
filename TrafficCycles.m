@@ -76,7 +76,7 @@ while ~DONE
 				SetCycle(ljHandle,	wcycle,	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 			elseif (toc/time <= 1)											%%WalkFlash
 				SetCycle(ljHandle,	cycle*2,PINMAP, 	LJ_ioPUT_DIGITAL_BIT);
-				SetCycle(ljHandle,	wcycle & (mod(ceil(toc-walkTime),2)),	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
+				SetCycle(ljHandle,	(wcycle & (mod(ceil(toc-walkTime),2)))+1,	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 
 			elseif (toc/(time+ yellowTime) <= 1)							%%YellowTime
 				SetCycle(ljHandle,	cycle,	PINMAP,		LJ_ioPUT_DIGITAL_BIT);		%%Signal the SetCycle to use the yellow light
