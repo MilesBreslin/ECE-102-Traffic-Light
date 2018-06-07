@@ -52,6 +52,24 @@ while ~DONE
 			time = walkTime;
         end
 
+		fprintf("\n");
+		fprintf("Cycle: %d\n", n);
+		for q = 1:length(cycle)
+			fprintf("   %d",cycle[n]);
+		end
+		fprintf("\n");
+		fprintf("Walk Active\n")
+		for q = 1:length(wcycle)
+			fprintf("	%d",wcycle[q]);
+		end
+		fprintf("\n");
+		fprintf("Button Buffer\n")
+		for q = 1:length(activeWalk)
+			fprintf("	%d",activeWalk[q]);
+		end
+		fprintf("\n");
+		fprintf("Green Time: %d\n", time);
+
 		while (toc/(time + yellowTime + redTime) <= 1)
 			if (toc/(time - walkTime) <= 1)									%%GreenTime
 				SetCycle(ljHandle,	cycle*2,PINMAP,		LJ_ioPUT_DIGITAL_BIT);		%%Use 3rd column
@@ -69,10 +87,25 @@ while ~DONE
 				SetCycle(ljHandle,	zeros(1,length(wcycle)),	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 			end
 
-			activeWalk = activeWalk | getButtonPresses(ljHandle,BTNMAP,LJ_ioGET_DIGITAL_BIT);		%%Add buttons being pressed only
+			%%Check For Button Presses
+			btn = getButtonPresses(ljHandle,BTNMAP,LJ_ioGET_DIGITAL_BIT);
+			activeWalk = activeWalk | btn;
+
+			DONE = true;		%%Special Case: All buttons are pressed will safely escape
+			for q = 1:length(BTNMAP)
+				if (btn(q) == 0)
+					DONE = false;
+					break;
+				end
+			end
+
 			pause(.1)
 		end
 
 		activeWalk(n) = 0;		%%Clear walk buffer *after* it is done displaying.
+
+		if (DONE == true)
+			break;
+		end
 	end
 end
