@@ -42,10 +42,12 @@ while ~DONE
 		tic
 		c =	CYCLEMAP(n,:);			%%Only pull the active cycle
         cycle = c(1:end-1);
+        clear c;
 		time = 	CYCLEMAP(n,end);				%%Exclude the last value for time
 		
         w = WALKMAP(n,:);
         wcycle = w(1:end-1) & activeWalk;
+        clear w;
 		if (time<walkTime)		%%Gotta be larger than the walk time
 			time = walkTime;
         end
