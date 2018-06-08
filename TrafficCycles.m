@@ -1,7 +1,7 @@
 clear
 clear global
 
-%% Load Data
+% Load Data
 
 f_PINMAP =		'cyclepinmap.dat';
 f_CYCLEMAP =	'cyclemap.dat';
@@ -21,7 +21,7 @@ walkTime = 3;
 yellowTime = 2;
 redTime = 3;
 
-%% Load Labjack
+% Load Labjack
 
 ljud_LoadDriver
 ljud_Constants
@@ -32,7 +32,7 @@ if (Error ~= 0)
 	return
 end
 
-%% Main Loop
+% Main Loop
 
 DONE = false;		%%Allow Safe escape if implemented
 activeWalk = 	zeros(1,length(CYCLEMAP(:,1)));		%%Create the Button buffer
@@ -55,17 +55,17 @@ while ~DONE
 		fprintf("\n");
 		fprintf("Cycle: %d\n", n);
 		for q = 1:length(cycle)
-			fprintf("   %d",cycle[n]);
+			fprintf("   %d",cycle(q));
 		end
 		fprintf("\n");
 		fprintf("Walk Active\n")
 		for q = 1:length(wcycle)
-			fprintf("	%d",wcycle[q]);
+			fprintf("	%d",wcycle(q));
 		end
 		fprintf("\n");
 		fprintf("Button Buffer\n")
 		for q = 1:length(activeWalk)
-			fprintf("	%d",activeWalk[q]);
+			fprintf("	%d",activeWalk(q));
 		end
 		fprintf("\n");
 		fprintf("Green Time: %d\n", time);
@@ -76,7 +76,7 @@ while ~DONE
 				SetCycle(ljHandle,	wcycle,	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 			elseif (toc/time <= 1)											%%WalkFlash
 				SetCycle(ljHandle,	cycle*2,PINMAP, 	LJ_ioPUT_DIGITAL_BIT);
-				SetCycle(ljHandle,	(wcycle & (mod(ceil(toc-walkTime),2)))+1,	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
+				SetCycle(ljHandle,	(wcycle & (mod(ceil(toc-walkTime),2))),	WALKPINMAP,	LJ_ioPUT_DIGITAL_BIT);
 
 			elseif (toc/(time+ yellowTime) <= 1)							%%YellowTime
 				SetCycle(ljHandle,	cycle,	PINMAP,		LJ_ioPUT_DIGITAL_BIT);		%%Signal the SetCycle to use the yellow light

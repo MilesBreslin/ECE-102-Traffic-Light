@@ -1,7 +1,7 @@
 clear
 clear global
 
-%% Load Data
+% Load Data
 
 f_PINMAP =      'cyclepinmap.dat';
 f_CYCLEMAP =    'cyclemap.dat';
@@ -17,7 +17,7 @@ WALKMAP =       importdata(f_WALKMAP);
 
 BTNMAP =        WALKMAP(:,end);     %%Last Column is the button pins
 
-%% Load Labjack
+% Load Labjack
 
 ljud_LoadDriver
 ljud_Constants
@@ -28,7 +28,7 @@ if (Error ~= 0)
     return
 end
 
-%% Main Loop
+% Main Loop
 
 DONE = false;       %%Allow Safe escape
 tic
