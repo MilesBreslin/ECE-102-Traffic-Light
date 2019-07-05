@@ -52,3 +52,7 @@ Walk Pin Map is the data file which contains all the FIO pin numbers for the Wal
 1,2
 3,4
 ```
+
+## License
+
+This project is licensed under the MIT License. For more details, see the `LICENSE` file.
